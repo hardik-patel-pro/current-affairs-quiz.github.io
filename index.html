@@ -4,14 +4,22 @@
   <meta charset="UTF-8">
   <title>ગુજરાતી કરંટ અફેર્સ ક્વિઝ - 50 પ્રશ્નો</title>
   <style>
-    body { font-family: 'Noto Sans Gujarati', sans-serif; background: #f2f2f2; padding: 20px; }
+      body { font-family: 'Noto Sans Gujarati', sans-serif; background: #f2f2f2; padding: 20px; }
     .quiz-container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
     .question { display: none; margin-bottom: 20px; }
     .question.active { display: block; }
     .options label { display: block; margin: 8px 0; }
     .navigation { margin-top: 20px; }
-    .navigation button { padding: 10px 15px; font-size: 16px; margin-right: 10px; }
-    .result { font-size: 20px; font-weight: bold; color: green; margin-top: 20px; }
+    .navigation button { padding: 10px 15px; font-size: 16px; margin-right: 10px; cursor: pointer; border: none; border-radius: 5px; }
+    .navigation button:nth-child(1) { background-color: #6c757d; color: white; } /* Back Button */
+    .navigation button:nth-child(1):hover { background-color: #5a6268; }
+    .navigation button:nth-child(2) { background-color: #007bff; color: white; } /* Next Button */
+    .navigation button:nth-child(2):hover { background-color: #0069d9; }
+    .navigation button:nth-child(3) { background-color: #28a745; color: white; } /* Submit Button */
+    .navigation button:nth-child(3):hover { background-color: #218838; }
+    .navigation button:nth-child(4) { background-color: #ffc107; color: black; } /* View Answer Button */
+    .navigation button:nth-child(4):hover { background-color: #e0a800; }
+    .result { font-size: 20px; font-weight: bold; color: green; margin-top: 20px; text-align: right; }
     #timer { font-size: 18px; color: red; font-weight: bold; float: right; }
   </style>
 </head>
@@ -23,19 +31,18 @@
       <button type="button" onclick="prevQuestion()">પાછળ</button>
       <button type="button" onclick="nextQuestion()">આગળ</button>
       <button type="button" onclick="submitQuiz()">સબમિટ કરો</button>
+      <button type="button" onclick="viewAnswer(currentQuestion)">✔️ view answer</button> 
     </div>
     <div class="result" id="result"></div>
   </div>
 
   <script>
-    const questions = [
-      { q: "ભારતના નવીન રાષ્ટ્રપતિ કોણ છે?", options: ["દ્રૌપદી મુર્મુ", "રામનાથ કોવિંદ", "નરેન્દ્ર મોદી", "અમિત શાહ"], answer: 0 },
+    const questions = [{ q: "ભારતના નવીન રાષ્ટ્રપતિ કોણ છે?", options: ["દ્રૌપદી મુર્મુ", "રામનાથ કોવિંદ", "નરેન્દ્ર મોદી", "અમિત શાહ"], answer: 0 },
       { q: "2025માં ભારતે કોને ICC T20 વર્લ્ડ કપમાં હરાવ્યું?", options: ["ઓસ્ટ્રેલિયા", "ઇંગ્લેન્ડ", "દક્ષિણ આફ્રિકા", "પાકિસ્તાન"], answer: 3 },
       { q: "શુક્ર ગ્રહ માટે ઇસરોની મિશનનું નામ શું છે?", options: ["ચંદ્રયાન-4", "શુક્રયાન-1", "આદિત્ય-L1", "ગગનયાન"], answer: 1 },
       { q: "વિશ્વ પર્યાવરણ દિવસ 2025 નું થીમ શું હતું?", options: ["Beat Plastic Pollution", "Ecosystem Restoration", "Land Restoration and Drought Resilience", "Only One Earth"], answer: 2 },
       { q: "ભારતના વડા પ્રધાન કોણ છે (2025)?", options: ["રાહુલ ગાંધી", "નરેન્દ્ર મોદી", "અમિત શાહ", "અરવિંદ કેજરીવાલ"], answer: 1 },
-
-      // Remaining 45 questions added below:
+	  
       { q: "G20 સમિટ 2025 કયા શહેરમાં યોજાઈ હતી?", options: ["ન્યૂ દિલ્હી", "મુંબઇ", "દુબઈ", "પેરિસ"], answer: 0 },
       { q: "2025માં નોબેલ શાંતિ પુરસ્કાર કોને મળ્યો?", options: ["માલાલા યુસુફઝાઈ", "WHO", "António Guterres", "ગ્રેટા થનબર્ગ"], answer: 0 },
       { q: "કઈ એરપોર્ટે કાર્બન ન્યુટ્રલ પ્રમાણપત્ર મેળવ્યું?", options: ["મુંબઈ", "ચેન્નાઈ", "દિલ્હી", "બેંગલુરુ"], answer: 3 },
@@ -91,11 +98,12 @@
   { "q": "ક્યા રાજ્યએ 2025માં સૌથી વધુ ઈ-ગવર્નન્સ પુરસ્કાર જીત્યો?", "options": ["કેરળ", "ગુજરાત", "ઉત્તર પ્રદેશ", "મહારાષ્ટ્ર"], "answer": 1 },
   { "q": "2025માં કોના નામે નવી સ્પેસ ટેક પાર્ક શરૂ થયો?", "options": ["અબ્દુલ કલામ", "વિક્રમ સારાભાઈ", "હоми ભાભા", "સીવી રામન"], "answer": 1 }
  
- 
-    ];
+	  ]; // keep your 50-question array here
 
     const form = document.getElementById("quizForm");
     let currentQuestion = 0;
+    const userAnswers = [];
+
     function loadQuestions() {
       form.innerHTML = "";
       questions.forEach((q, index) => {
@@ -138,11 +146,45 @@
       let score = 0;
       questions.forEach((q, index) => {
         const selected = document.querySelector(`input[name=q${index}]:checked`);
-        if (selected && parseInt(selected.value) === q.answer) {
+        const selectedVal = selected ? parseInt(selected.value) : null;
+        userAnswers[index] = selectedVal;
+        if (selectedVal === q.answer) {
           score++;
         }
       });
       document.getElementById("result").textContent = `તમારું સ્કોર: ${score} / ${questions.length}`;
+      viewAnswer(currentQuestion);
+    }
+
+    function viewAnswer(index) {
+      const q = questions[index];
+      const labels = document.querySelectorAll(`#q${index} .options label`);
+      labels.forEach((label, i) => {
+        label.style.fontWeight = 'normal';
+        label.style.color = '';
+        if (i === q.answer) {
+          label.style.fontWeight = 'bold';
+          label.style.color = 'green';
+        } else if (userAnswers[index] === i) {
+          label.style.color = 'red';
+        }
+      });
+    }
+
+    function downloadReport() {
+      let report = "પ્રશ્ન નંબર,તમારો જવાબ,સાચો જવાબ\n";
+      questions.forEach((q, i) => {
+        const user = userAnswers[i] !== null && userAnswers[i] !== undefined ? q.options[userAnswers[i]] : "--";
+        const correct = q.options[q.answer];
+        report += `${i + 1},${user},${correct}\n`;
+      });
+      const blob = new Blob([report], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = "quiz_report.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
     }
 
     let timeLeft = 600;
@@ -157,7 +199,7 @@
         submitQuiz();
       }
       timeLeft--;
-    }, 1000);
+    }, 3000);
 
     loadQuestions();
   </script>
